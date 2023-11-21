@@ -36,6 +36,7 @@ Include Files
 #include "thread_app_callbacks.h"
 #include "thread_attributes.h"
 
+#include "fsl_fxos.h"
 #include "app_init.h"
 #include "app_stack_config.h"
 #include "app_thread_config.h"
@@ -43,6 +44,9 @@ Include Files
 #include "app_temp_sensor.h"
 #include "coap.h"
 #include "app_socket_utils.h"
+#include "pin_mux.h"
+#include "stdbool.h"
+#include "clock_config.h"
 #if THR_ENABLE_EVENT_MONITORING
 #include "app_event_monitoring.h"
 #endif
@@ -53,7 +57,6 @@ Include Files
 #if UDP_ECHO_PROTOCOL
 #include "app_echo_udp.h"
 #endif
-
 /*==================================================================================================
 Private macros
 ==================================================================================================*/
@@ -91,13 +94,15 @@ Private macros
 #define APP_DEFAULT_DEST_ADDR                   in6addr_realmlocal_allthreadnodes
 ///CHANGES
 #define APP_TEAM1_URI_PATH                  	"/team1"
-
+#define APP_ACCEL_URI_PATH                      "/accel"
 
 //Definitions for P2
 void counter_increase (void *pData);
 static tmrTimerID_t mTimer_c_counter;
 uint16_t appTimeoutMs_counter = 1000;
 static uint8_t counter_timer = 0;
+fxos_handle_t gfxosHandle;
+fxos_data_t gsensorData;
 
 
 
@@ -145,9 +150,11 @@ static void APP_CoapResource1Cb(coapSessionStatus_t sessionStatus, void *pData, 
 static void APP_CoapResource2Cb(coapSessionStatus_t sessionStatus, void *pData, coapSession_t *pSession, uint32_t dataLen);
 //P2
 static void APP_CoapTeam1(coapSessionStatus_t sessionStatus, void *pData, coapSession_t *pSession, uint32_t dataLen);
+static void APP_CoapAccel(coapSessionStatus_t sessionStatus, void *pData, coapSession_t *pSession, uint32_t dataLen);
 
+void *App_GetaccelDataString(void);
 void *App_GetTimeDataString(void);
-
+void HW_i2cInit_accel();
 #if LARGE_NETWORK
 static void APP_CoapResetToFactoryDefaultsCb(coapSessionStatus_t sessionStatus, uint8_t *pData, coapSession_t *pSession, uint32_t dataLen);
 static void APP_SendResetToFactoryCommand(uint8_t *param);
@@ -172,6 +179,9 @@ const coapUriPath_t gAPP_RESOURCE2_URI_PATH = {SizeOfString(APP_RESOURCE2_URI_PA
 
 const coapUriPath_t gAPP_TEAM1_URI_PATH = {SizeOfString(APP_TEAM1_URI_PATH), APP_TEAM1_URI_PATH};
 
+const coapUriPath_t gAPP_ACCEL_URI_PATH = {SizeOfString(APP_ACCEL_URI_PATH), APP_ACCEL_URI_PATH};
+
+const uint8_t accel_address[] = {0x1CU, 0x1DU, 0x1EU, 0x1FU};
 
 #if LARGE_NETWORK
 const coapUriPath_t gAPP_RESET_URI_PATH = {SizeOfString(APP_RESET_TO_FACTORY_URI_PATH), (uint8_t *)APP_RESET_TO_FACTORY_URI_PATH};
@@ -217,7 +227,9 @@ void APP_Init
     void
 )
 {
+
     /* Initialize pointer to application task message queue */
+	HW_i2cInit_accel();
     mpAppThreadMsgQueue = &appThreadMsgQueue;
 
     /* Initialize main thread message queue */
@@ -233,6 +245,7 @@ void APP_Init
 
     /* Use one instance ID for application */
     mThrInstanceId = gThrDefaultInstanceId_c;
+
 
 #if THR_ENABLE_EVENT_MONITORING
     /* Initialize event monitoring */
@@ -532,6 +545,7 @@ static void APP_InitCoapDemo
 									 {APP_CoapResource1Cb, (coapUriPath_t*)&gAPP_RESOURCE1_URI_PATH},
 									 {APP_CoapResource2Cb, (coapUriPath_t*)&gAPP_RESOURCE2_URI_PATH},
 									 {APP_CoapTeam1, (coapUriPath_t*)&gAPP_TEAM1_URI_PATH},
+                                     {APP_CoapAccel, (coapUriPath_t*)&gAPP_ACCEL_URI_PATH},
 #if LARGE_NETWORK
                                      {APP_CoapResetToFactoryDefaultsCb, (coapUriPath_t *)&gAPP_RESET_URI_PATH},
 #endif
@@ -1547,6 +1561,184 @@ uint32_t dataLen
 	        MEM_BufferFree(pAckMsg);
 	    }
 	    COAP_CloseSession(pSession);
+}
+
+
+
+void *App_GetaccelDataString
+(
+    void
+)
+{
+    uint8_t dataElements = 3;
+    uint16_t AccRaw[dataElements];
+    float sensitivity_x = 0.244;  // Sensibilidad del FSOXS8700CQ para el eje X en mg/dígito
+    float sensitivity_y = 0.244 ;// Sensibilidad del FSOXS8700CQ para el eje Y en mg/dígito
+    float sensitivity_z = 0.244;  // Sensibilidad del FSOXS8700CQ para el eje Z en mg/dígito
+    float range_g = 2.0;
+    /* Compute temperature */
+    uint8_t *pIndex = NULL;
+    uint8_t sAccel[] = "X=";
+    uint8_t *sendAccelData = MEM_BufferAlloc(24U);
+
+     /* Get counter value */
+    FXOS_ReadSensorData(&gfxosHandle, &gsensorData);
+
+    /* Get the X, Y and Z data from the sensor data structure in 14 bit left format data*/
+    AccRaw[0] = (int16_t)((uint16_t)((uint16_t)gsensorData.accelXMSB << 8) | (uint16_t)gsensorData.accelXLSB) / 4U;
+    AccRaw[1] = (int16_t)((uint16_t)((uint16_t)gsensorData.accelYMSB << 8) | (uint16_t)gsensorData.accelYLSB) / 4U;
+    AccRaw[2] = (int16_t)((uint16_t)((uint16_t)gsensorData.accelZMSB << 8) | (uint16_t)gsensorData.accelZLSB) / 4U;
+
+    float normalized_acceleration_x = (((float)AccRaw[0] * sensitivity_x) / 1000.0) * range_g; // Convertir de mg a g
+    float normalized_acceleration_y = (((float)AccRaw[1] * sensitivity_y) / 1000.0) * range_g; // Convertir de mg a g
+    float normalized_acceleration_z = (((float)AccRaw[2] * sensitivity_z) / 1000.0) * range_g; // Convertir de mg a g
+
+ //   float angle_x = atan2(normalized_acceleration_x, sqrt(normalized_acceleration_y * normalized_acceleration_y + normalized_acceleration_z * normalized_acceleration_z));
+ //   float angle_y = atan2(normalized_acceleration_y, sqrt(normalized_acceleration_x * normalized_acceleration_x + normalized_acceleration_z * normalized_acceleration_z));
+ //   float angle_z = atan2(sqrt(normalized_acceleration_x * normalized_acceleration_x + normalized_acceleration_y * normalized_acceleration_y), normalized_acceleration_z);
+
+    // Convertir de radianes a grados si es necesario
+   // angle_x = angle_x * (180.0 / 3.1416);
+   // angle_y = angle_y * (180.0 / 3.1416);
+   // angle_z = angle_z * (180.0 / 3.1416);
+
+    if(NULL == sendAccelData)
+    {
+      return sendAccelData;
+    }
+    // shell_printf("\t x: %d,  y: %d,  z: %d\n\r", AccRaw[0],AccRaw[1],AccRaw[2]);
+    /* Clear data and reset buffers */
+    FLib_MemSet(sendAccelData, 0, 28U);
+
+    /* Compute output */
+    pIndex = sendAccelData;
+    FLib_MemCpy(pIndex, sAccel, SizeOfString(sAccel));
+    pIndex += SizeOfString(sAccel);
+    NWKU_PrintDec((AccRaw[0]), pIndex, 6, TRUE);
+    pIndex += 6; *pIndex = ' '; pIndex++;
+
+    *pIndex = 'Y'; pIndex++; *pIndex = '='; pIndex++;
+    NWKU_PrintDec((AccRaw[1]), pIndex, 6, TRUE);
+    pIndex += 6; *pIndex = ' '; pIndex++;
+
+    *pIndex = 'Z'; pIndex++; *pIndex = '='; pIndex++;
+    NWKU_PrintDec((AccRaw[2]), pIndex, 6, TRUE);
+    pIndex += 6; *pIndex = ' ';
+
+    return sendAccelData;
+}
+
+static void APP_CoapAccel(
+coapSessionStatus_t sessionStatus,
+void *pData,
+coapSession_t *pSession,
+uint32_t dataLen
+)
+{
+	//we added the ahndler for the packet received
+	uint8_t *pAckMsg = NULL;
+	uint32_t loadSize = 0;
+	if (gCoapConfirmable_c == pSession->msgType)
+	{
+		if(gCoapGET_c == pSession->code)
+		{
+			pAckMsg = App_GetaccelDataString(); //HERE ADD THE FUCTION U WANT TO REPRODUCE EACH TIME
+			loadSize = strlen((char*)pAckMsg);
+			COAP_Send(pSession, gCoapMsgTypeAckSuccessContent_c, pAckMsg, loadSize);
+			COAP_Send(pSession, gCoapMsgTypeAckSuccessChanged_c, NULL, 0);
+		}
+	}
+	else if (gCoapNonConfirmable_c == pSession->msgType)
+	{
+		pAckMsg = App_GetaccelDataString(); //HERE ADD THE FUCTION U WANT TO REPRODUCE EACH TIME
+		loadSize = strlen((char*)pAckMsg);
+		COAP_Send(pSession, gCoapMsgTypeAckSuccessContent_c, pAckMsg, loadSize);
+	}
+	else{
+
+		COAP_Send(pSession, gCoapMsgTypeAckSuccessChanged_c, NULL, 0);
+	}
+
+	if(pAckMsg)
+	{
+		MEM_BufferFree(pAckMsg);
+	}
+}
+
+
+void HW_i2cInit_accel(){
+    /* Board pin, clock, debug console init */
+
+    i2c_master_handle_t MasterHandle;
+
+    i2c_master_config_t i2cConfig;
+    uint32_t i2cSourceClock;
+    uint8_t acclIndex = 0;
+    uint8_t regResult = 0;
+    uint8_t array_addr_size = 0;
+    bool foundDevice = false;
+    uint8_t sensorRange = 0;
+    uint8_t dataScale = 0;
+    uint8_t i = 0;
+    BOARD_InitPins();
+    BOARD_BootClockRUN();
+    BOARD_I2C_ReleaseBus();
+    BOARD_I2C_ConfigurePins();
+
+    i2cSourceClock = CLOCK_GetFreq(I2C1_CLK_SRC);
+    gfxosHandle.base = I2C1;
+    gfxosHandle.i2cHandle = &MasterHandle;
+
+    I2C_MasterGetDefaultConfig(&i2cConfig);
+    I2C_MasterInit(I2C1, &i2cConfig, i2cSourceClock);
+    I2C_MasterTransferCreateHandle(I2C1, &MasterHandle, NULL, NULL);
+
+    /* Find sensor devices */
+    array_addr_size = sizeof(accel_address) / sizeof(accel_address[0]);
+    for (i = 0; i < array_addr_size; i++)
+    {
+        gfxosHandle.xfer.slaveAddress = accel_address[i];
+        if (FXOS_ReadReg(&gfxosHandle, WHO_AM_I_REG, &regResult, 1) == kStatus_Success)
+        {
+            foundDevice = true;
+            break;
+        }
+        if ((i == (array_addr_size - 1)) && (!foundDevice))
+        {
+
+            while (1)
+            {
+            };
+        }
+    }
+
+    /* Init accelerometer sensor */
+    if (FXOS_Init(&gfxosHandle) != kStatus_Success)
+    {
+        return -1;
+    }
+    /* Get sensor range */
+    if (FXOS_ReadReg(&gfxosHandle, XYZ_DATA_CFG_REG, &sensorRange, 1) != kStatus_Success)
+    {
+        return -1;
+    }
+    if (sensorRange == 0x00)
+    {
+        dataScale = 2U;
+    }
+    else if (sensorRange == 0x01)
+    {
+        dataScale = 4U;
+    }
+    else if (sensorRange == 0x10)
+    {
+        dataScale = 8U;
+    }
+    else
+    {
+    }
+      while (FXOS_Init(&gfxosHandle) != kStatus_Success) { };
+
 }
 
 

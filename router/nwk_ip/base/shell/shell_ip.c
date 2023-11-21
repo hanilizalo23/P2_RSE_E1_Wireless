@@ -3978,7 +3978,11 @@ static void SHELL_CoapAckReceive
 )
 {
     char remoteAddrStr[INET6_ADDRSTRLEN];
-
+    int i=0;
+    uint16_t AccRaw[3]={0,0,0};
+    int16_t x=0;
+    int16_t y=0;
+    int16_t z=0;
     if(gCoapSuccess_c == sessionStatus)
     {
         ntop(AF_INET6, (ipAddr_t*)&pSession->remoteAddrStorage.ss_addr, remoteAddrStr, INET6_ADDRSTRLEN);
@@ -4045,6 +4049,52 @@ static void SHELL_CoapAckReceive
         	            /* coap rsp from <IP addr>: <ACK> <rspcode: X.XX> <payload ASCII> */
         	            shell_printf(" from IPv6: ");
         	            shell_printf(remoteAddrStr);
+        }
+        else if ('X' == pData[0])
+        {
+            uint32_t index = 0;
+            uint8_t* pCrtChar = (uint8_t*)pData;
+
+            while ((*pCrtChar < 127) && (index < dataLen))
+            {
+
+                if (*pCrtChar == '=') {
+                	pCrtChar++; // Avanza el puntero al inicio del número
+                        index ++;
+                        while (*pCrtChar >= '0' && *pCrtChar <= '9') {
+                        	AccRaw[i] = AccRaw[i] * 10 + (*pCrtChar - '0'); // Convierte los caracteres a número
+                            pCrtChar++; // Avanza al siguiente carácter
+                            index ++;
+                        }
+                        i++;
+                }
+                else {
+                	 pCrtChar ++;
+                	 index ++;
+                }
+
+            }
+            x = (int16_t)AccRaw[0];
+            y = (int16_t)AccRaw[1];
+            z = (int16_t)AccRaw[2];
+
+
+         /*
+            if (index == dataLen)
+            {
+                shell_write(" ");
+                shell_writeN((char*)pData, dataLen);
+            }
+            else
+            {
+                shell_printf(" 0x");
+                SHELL_PrintBuff(pData, dataLen);
+            }*/
+            shell_printf("x= %d,  y= %d,  z= %d  ", x, y, z);
+            ntop(AF_INET6, (ipAddr_t*)&pSession->remoteAddrStorage.ss_addr, remoteAddrStr, INET6_ADDRSTRLEN);
+            /* coap rsp from <IP addr>: <ACK> <rspcode: X.XX> <payload ASCII> */
+            shell_printf(" from IPv6: ");
+            shell_printf(remoteAddrStr);
         }
         else if(0 != dataLen)
         {

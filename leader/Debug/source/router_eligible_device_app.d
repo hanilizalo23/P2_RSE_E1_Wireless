@@ -61,10 +61,7 @@ source/router_eligible_device_app.o source/router_eligible_device_app.d: \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/dhcp6.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/dhcp6_server.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\thread/thread_attributes.h \
- D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\common/app_init.h \
- D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\framework\LED\Interface/LED.h \
- D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\board/board.h \
- D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_gpio.h \
+ D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_fxos.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_common.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\CMSIS/fsl_device_registers.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\CMSIS/MKW41Z4.h \
@@ -75,6 +72,11 @@ source/router_eligible_device_app.o source/router_eligible_device_app.d: \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\CMSIS/system_MKW41Z4.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\CMSIS/MKW41Z4_features.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_clock.h \
+ D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_i2c.h \
+ D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\common/app_init.h \
+ D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\framework\LED\Interface/LED.h \
+ D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\board/board.h \
+ D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_gpio.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/dns_client.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/dns_utils.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\config/app_thread_config.h \
@@ -85,6 +87,9 @@ source/router_eligible_device_app.o source/router_eligible_device_app.d: \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\common/app_temp_sensor.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\common/app_socket_utils.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/session.h \
+ D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\board/pin_mux.h \
+ D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\board/clock_config.h \
+ D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_common.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\common/app_event_monitoring.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\thread/thread_mgmt.h \
  D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\base\interface/thci.h
@@ -149,10 +154,7 @@ D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligibl
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/dhcp6.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/dhcp6_server.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\thread/thread_attributes.h:
-D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\common/app_init.h:
-D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\framework\LED\Interface/LED.h:
-D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\board/board.h:
-D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_gpio.h:
+D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_fxos.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_common.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\CMSIS/fsl_device_registers.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\CMSIS/MKW41Z4.h:
@@ -163,6 +165,11 @@ D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligibl
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\CMSIS/system_MKW41Z4.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\CMSIS/MKW41Z4_features.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_clock.h:
+D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_i2c.h:
+D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\common/app_init.h:
+D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\framework\LED\Interface/LED.h:
+D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\board/board.h:
+D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_gpio.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/dns_client.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/dns_utils.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\config/app_thread_config.h:
@@ -173,6 +180,9 @@ D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligibl
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\common/app_temp_sensor.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\common/app_socket_utils.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/session.h:
+D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\board/pin_mux.h:
+D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\board/clock_config.h:
+D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\drivers/fsl_common.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\common/app_event_monitoring.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\thread/thread_mgmt.h:
 D:\MPO\ITESO\9_semestre\Redes\codec\lab2_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\base\interface/thci.h:
