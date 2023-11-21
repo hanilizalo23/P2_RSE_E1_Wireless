@@ -1,0 +1,48 @@
+!SESSION 2023-11-16 19:11:19.772 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=11.0.11
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_MX
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.nxp.mcuxpresso.core.datamodels 1 0 2023-11-16 19:11:44.805
+!MESSAGE Recreating part support. No part support available.
+
+!ENTRY com.nxp.mcuxpresso.core.datamodels 1 0 2023-11-16 19:11:55.268
+!MESSAGE The device 'MK64FN1M0xxx12' (version='1.0.0') from SDK 'SDK_2.x_FRDM-K64F' (version='2.11.0', build='541 2022-01-14') will be installed.
+
+!ENTRY com.nxp.mcuxpresso.core.datamodels 1 0 2023-11-16 19:11:57.170
+!MESSAGE The device 'MK66FN2M0xxx18' (version='1.0.0') from SDK 'SDK_2.x_FRDM-K66F' (version='2.11.0', build='541 2022-01-14') will be installed.
+
+!ENTRY com.nxp.mcuxpresso.core.datamodels 1 0 2023-11-16 19:11:57.390
+!MESSAGE The device 'MKW41Z512xxx4' (version='1.0.0') from SDK 'SDK_2.x_FRDM-KW41Z' (version='2.2.3', build='') will be installed.
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-11-16 19:12:41.696
+!MESSAGE Indexed 'frdmkw41z_wireless_examples_thread_router_eligible_device_freertos' (0 sources, 0 headers) in 0.01 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0 %)
+
+!ENTRY com.crt.log 1 0 2023-11-16 19:17:29.080
+!MESSAGE Trying to connect to redlink server on port 3025.
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 1 0 2023-11-16 19:17:29.090
+!MESSAGE RedlinkServer telnet session connected on port 3025->51406 @ 127.0.0.1
+
+!ENTRY com.nxp.mcuxpresso.core.debug.support.linkserver 4 0 2023-11-16 19:17:42.589
+!MESSAGE Unable to parse ProbeList output to get probe ref count: []
+
+!ENTRY com.nxp.mcuxpresso.core.debug 1 0 2023-11-16 19:18:07.682
+!MESSAGE Telnet session connected on port 2333->51535 @ 127.0.0.1
+
+!ENTRY com.crt.utils 1 0 2023-11-16 19:18:07.976
+!MESSAGE Connected to 127.0.0.1 on port 2332.
+
+!ENTRY com.nxp.mcuxpresso.core.debug 1 0 2023-11-16 19:36:57.274
+!MESSAGE Telnet session connected on port 2333->51618 @ 127.0.0.1
+
+!ENTRY com.crt.utils 1 0 2023-11-16 19:36:57.458
+!MESSAGE Connected to 127.0.0.1 on port 2332.
+
+!ENTRY com.nxp.mcuxpresso.core.debug 1 0 2023-11-16 19:40:31.997
+!MESSAGE Telnet session connected on port 2333->64578 @ 127.0.0.1
+
+!ENTRY com.crt.utils 1 0 2023-11-16 19:40:32.120
+!MESSAGE Connected to 127.0.0.1 on port 2332.
