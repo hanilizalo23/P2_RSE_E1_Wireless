@@ -94,9 +94,9 @@ Private macros
 
 
 //Definitions for P2
-void counter_increase (void *pData);
+void counter(void *pData);
 static tmrTimerID_t mTimer_c_counter;
-uint16_t appTimeoutMs_counter = 1000;
+uint16_t appTimeoutMs_counter = 5000;
 static uint8_t counter_timer = 0;
 
 
@@ -452,6 +452,7 @@ void APP_Commissioning_Handler
             App_UpdateStateLeds(gDeviceState_FactoryDefault_c);
             break;
         case gThrEv_MeshCop_JoinerAccepted_c:
+        		TMR_StartIntervalTimer(mTimer_c_counter, appTimeoutMs_counter, counter, NULL);
             break;
 
         /* Commissioner Events(event set applies for all Commissioners: on-mesh, external, native) */
@@ -1418,6 +1419,29 @@ static void App_RestoreLeaderLed
 )
 {
     App_UpdateStateLeds(gDeviceState_Leader_c);
+}
+
+
+
+void counter(void *pData)
+{
+
+	//Just to avoid the compiler warning
+
+	(void)pData;
+
+	if(counter_timer < 200){
+
+		counter_timer++;
+
+	}
+
+	else{
+
+		counter_timer = 0;
+
+	}
+
 }
 
 
