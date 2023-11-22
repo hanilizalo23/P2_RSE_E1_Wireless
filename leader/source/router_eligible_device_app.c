@@ -1524,15 +1524,15 @@ uint32_t dataLen
 	    {
 	    	if (gCoapGET_c == pSession->code)
 	    	{
-	    		pAckMsg = App_GetTimeDataString(); //HERE ADD THE FUCTION U WANT TO REPRODUCE EACH TIME
+	    	pAckMsg = App_GetTimeDataString(); //HERE ADD THE FUCTION U WANT TO REPRODUCE EACH TIME
 	    		loadSize = strlen((char*)pAckMsg);
-	    		COAP_Send(pSession, gCoapMsgTypeAckSuccessContent_c, pAckMsg, loadSize);
+	    		COAP_Send(pSession, gCoapMsgTypeAckSuccessChanged_c, pAckMsg, loadSize);
 	    		shell_write("'CON' instruction received from: ");
 	    		ntop(AF_INET6, (ipAddr_t*)&pSession->remoteAddrStorage.ss_addr, remoteAddrStr, INET6_ADDRSTRLEN);
-	    		/* coap rsp from <IP addr>: <ACK> <rspcode: X.XX> <payload ASCII> */
 	    		shell_printf(remoteAddrStr);
 	    		shell_write("\n\r");
-	            COAP_Send(pSession, gCoapMsgTypeAckSuccessChanged_c, NULL, 0);
+	           // COAP_Send(pSession, gCoapMsgTypeAckSuccessChanged_c, NULL, 0);
+
 	    	}
 	    	if (gCoapFailure_c !=sessionStatus)
 	    	{
@@ -1544,9 +1544,6 @@ uint32_t dataLen
 	    {
 	    	if (gCoapGET_c == pSession->code)
 	    	{
-	    		pAckMsg = & counter_timer; //HERE ADD THE FUCTION U WANT TO REPRODUCE EACH TIME
-	    		loadSize = strlen((char*)pAckMsg);
-	    		COAP_Send(pSession, gCoapMsgTypeAckSuccessContent_c, pAckMsg, loadSize);
 	    		shell_write("'NON' instruction received from: ");
 	    		ntop(AF_INET6, (ipAddr_t*)&pSession->remoteAddrStorage.ss_addr, remoteAddrStr, INET6_ADDRSTRLEN);
 	    		/* coap rsp from <IP addr>: <ACK> <rspcode: X.XX> <payload ASCII> */
@@ -1638,6 +1635,7 @@ uint32_t dataLen
 	//we added the ahndler for the packet received
 	uint8_t *pAckMsg = NULL;
 	uint32_t loadSize = 0;
+	char remoteAddrStr[INET6_ADDRSTRLEN];
 	if (gCoapConfirmable_c == pSession->msgType)
 	{
 		if(gCoapGET_c == pSession->code)
@@ -1646,13 +1644,18 @@ uint32_t dataLen
 			loadSize = strlen((char*)pAckMsg);
 			COAP_Send(pSession, gCoapMsgTypeAckSuccessContent_c, pAckMsg, loadSize);
 			COAP_Send(pSession, gCoapMsgTypeAckSuccessChanged_c, NULL, 0);
+    		shell_write("'CON' instruction received from: ");
+    		ntop(AF_INET6, (ipAddr_t*)&pSession->remoteAddrStorage.ss_addr, remoteAddrStr, INET6_ADDRSTRLEN);
+    		shell_printf(remoteAddrStr);
+    		shell_write("\n\r");
 		}
 	}
 	else if (gCoapNonConfirmable_c == pSession->msgType)
 	{
-		pAckMsg = App_GetaccelDataString(); //HERE ADD THE FUCTION U WANT TO REPRODUCE EACH TIME
-		loadSize = strlen((char*)pAckMsg);
-		COAP_Send(pSession, gCoapMsgTypeAckSuccessContent_c, pAckMsg, loadSize);
+		shell_write("'NON' instruction received from: ");
+		ntop(AF_INET6, (ipAddr_t*)&pSession->remoteAddrStorage.ss_addr, remoteAddrStr, INET6_ADDRSTRLEN);
+		shell_printf(remoteAddrStr);
+		shell_write("\n\r");
 	}
 	else{
 

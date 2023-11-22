@@ -142,7 +142,7 @@ Public macros
 /*! The PAN identifier.
    If this value is 0xFFFF a random PAN ID will be generated on network creation */
 #ifndef THR_PAN_ID
-    #define THR_PAN_ID                                  THR_ALL_FFs16
+    #define THR_PAN_ID                                  0x0101
 #endif
 
 /*! The extended Pan ID.

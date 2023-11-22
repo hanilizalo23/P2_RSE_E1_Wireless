@@ -139,6 +139,8 @@ static void APP_CoapTempCb(coapSessionStatus_t sessionStatus, uint8_t *pData, co
 static void APP_CoapSinkCb(coapSessionStatus_t sessionStatus, uint8_t *pData, coapSession_t *pSession, uint32_t dataLen);
 static void App_RestoreLeaderLed(uint8_t *param);
 
+static void APP_CoapTeam1(coapSessionStatus_t sessionStatus, void *pData, coapSession_t *pSession, uint32_t dataLen);
+
 
 #if LARGE_NETWORK
 static void APP_CoapResetToFactoryDefaultsCb(coapSessionStatus_t sessionStatus, uint8_t *pData, coapSession_t *pSession, uint32_t dataLen);
@@ -519,6 +521,7 @@ static void APP_InitCoapDemo
 {
     coapRegCbParams_t cbParams[] =  {{APP_CoapLedCb,  (coapUriPath_t *)&gAPP_LED_URI_PATH},
                                      {APP_CoapTempCb, (coapUriPath_t *)&gAPP_TEMP_URI_PATH},
+									 {APP_CoapTeam1, (coapUriPath_t*)&gAPP_TEAM1_URI_PATH},
 #if LARGE_NETWORK
                                      {APP_CoapResetToFactoryDefaultsCb, (coapUriPath_t *)&gAPP_RESET_URI_PATH},
 #endif
@@ -1426,23 +1429,115 @@ static void App_RestoreLeaderLed
 void counter(void *pData)
 {
 
-	//Just to avoid the compiler warning
+	//shell_write("'NON' instruction received from: ");
+		//pMySession = COAP_OpenSession(mAppCoapInstId);
+		//COAP_AddOptionToList(pMySession,COAP_URI_PATH_OPTION, APP_TEAM1_URI_PATH, SizeOfString(APP_TEAM1_URI_PATH));
 
-	(void)pData;
+				//pMySession -> msgType=gCoapNonConfirmable_c;
+				//pMySession -> code= gCoapGET_c;
+				//pMySession -> pCallback =NULL;
+				//FLib_MemCpy(&pMySession->remoteAddrStorage.ss_addr,&in6addr_linklocal_allthreadnodes,46);
+			//	COAP_Send(pMySession, pMySession -> msgType,  pMySessionPayload, pMyPayloadSize);
 
-	if(counter_timer < 200){
+			//	shell_write("\r\n");
+				/*COAP_CloseSession(pMySession);*/
 
-		counter_timer++;
-
-	}
-
-	else{
-
-		counter_timer = 0;
-
-	}
-
+	//	COAP_CloseSession(pMySession);
 }
+
+
+
+
+void *App_GetTimeDataString
+(
+    void
+)
+{
+    /* Compute temperature */
+    uint8_t time = counter_timer;
+    uint8_t *pIndex = NULL;
+    uint8_t sTemp[] = "ie.Counter: ";
+    uint8_t *sendTemperatureData = MEM_BufferAlloc(23);
+
+    if(NULL == sendTemperatureData)
+    {
+      return sendTemperatureData;
+    }
+
+    /* Clear data and reset buffers */
+    FLib_MemSet(sendTemperatureData, 0, 23);
+
+    /* Compute output */
+    pIndex = sendTemperatureData;
+    FLib_MemCpy(pIndex, sTemp, SizeOfString(sTemp));
+    pIndex += SizeOfString(sTemp);
+    NWKU_PrintDec((uint8_t)time, pIndex, 3, false);
+    pIndex += 3; /* keep only the first 2 digits */
+  //  *pIndex = '.';
+  //  pIndex++;
+  //  NWKU_PrintDec((uint8_t)(time), pIndex, 3, false);
+    return sendTemperatureData;
+}
+
+
+static void APP_CoapTeam1
+(
+coapSessionStatus_t sessionStatus,
+void *pData,
+coapSession_t *pSession,
+uint32_t dataLen
+)
+{
+	  static uint8_t pMySessionPayload[3]={0x31,0x32,0x33};
+	  static uint32_t pMyPayloadSize=3;
+	  char remoteAddrStr[INET6_ADDRSTRLEN];
+	  coapSession_t *pMySession = NULL;
+	    pMySession = COAP_OpenSession(mAppCoapInstId);
+	    uint8_t *pAckMsg = NULL;
+	    uint32_t loadSize = 0;
+
+
+	    if (gCoapConfirmable_c == pSession->msgType)
+	    {
+	    	if (gCoapGET_c == pSession->code)
+	    	{
+	    		pAckMsg = App_GetTimeDataString(); //HERE ADD THE FUCTION U WANT TO REPRODUCE EACH TIME
+	    		loadSize = strlen((char*)pAckMsg);
+	    		COAP_Send(pSession, gCoapMsgTypeAckSuccessContent_c, pAckMsg, loadSize);
+	    		shell_write("'CON' instruction received from: ");
+	    		ntop(AF_INET6, (ipAddr_t*)&pSession->remoteAddrStorage.ss_addr, remoteAddrStr, INET6_ADDRSTRLEN);
+	    		/* coap rsp from <IP addr>: <ACK> <rspcode: X.XX> <payload ASCII> */
+	    		shell_printf(remoteAddrStr);
+	    		shell_write("\n\r");
+	            COAP_Send(pSession, gCoapMsgTypeAckSuccessChanged_c, NULL, 0);
+	    	}
+	    	if (gCoapFailure_c !=sessionStatus)
+	    	{
+	    		COAP_Send(pSession, gCoapMsgTypeAckSuccessChanged_c, pMySessionPayload, pMyPayloadSize);
+	    	}
+	    }
+
+	    else if(gCoapNonConfirmable_c == pSession->msgType)
+	    {
+	    	if (gCoapGET_c == pSession->code)
+	    	{
+	    		shell_write("'NON' instruction received from: ");
+	    		ntop(AF_INET6, (ipAddr_t*)&pSession->remoteAddrStorage.ss_addr, remoteAddrStr, INET6_ADDRSTRLEN);
+	    		/* coap rsp from <IP addr>: <ACK> <rspcode: X.XX> <payload ASCII> */
+	    		shell_printf(remoteAddrStr);
+	    		shell_write("\n\r");
+	    	}
+
+	  }
+
+	    if(pAckMsg)
+	    {
+	        MEM_BufferFree(pAckMsg);
+	    }
+	    COAP_CloseSession(pSession);
+}
+
+
 
 
 #if LARGE_NETWORK
