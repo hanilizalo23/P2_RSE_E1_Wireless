@@ -1,0 +1,29 @@
+framework/NVM/Source/NV_FsciCommands.o \
+ framework/NVM/Source/NV_FsciCommands.d: \
+ ../framework/NVM/Source/NV_FsciCommands.c \
+ D:/nxp/RSE/P2_thread_router/frdmkw41z_wireless_examples_thread_router_eligible_device_freertos/source/config.h \
+ D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\config/app_config.h \
+ D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\config/app_stack_config.h \
+ D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/stack_config.h \
+ D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/thread_stack_config.h \
+ D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\config/app_framework_config.h \
+ D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\config/app_mac_config.h \
+ D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\framework\common/EmbeddedTypes.h \
+ D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\framework\Messaging\Interface/Messaging.h \
+ D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\framework\Lists/GenericList.h \
+ D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\framework\MemManager\Interface/MemManager.h \
+ D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\framework\FunctionLib/FunctionLib.h \
+ D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\framework\NVM\Interface/NVM_Interface.h
+D:/nxp/RSE/P2_thread_router/frdmkw41z_wireless_examples_thread_router_eligible_device_freertos/source/config.h:
+D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\config/app_config.h:
+D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\config/app_stack_config.h:
+D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/stack_config.h:
+D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\core\interface\modules/thread_stack_config.h:
+D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\config/app_framework_config.h:
+D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\nwk_ip\app\config/app_mac_config.h:
+D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\framework\common/EmbeddedTypes.h:
+D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\framework\Messaging\Interface/Messaging.h:
+D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\framework\Lists/GenericList.h:
+D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\framework\MemManager\Interface/MemManager.h:
+D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\framework\FunctionLib/FunctionLib.h:
+D:\nxp\RSE\P2_thread_router\frdmkw41z_wireless_examples_thread_router_eligible_device_freertos\framework\NVM\Interface/NVM_Interface.h:
