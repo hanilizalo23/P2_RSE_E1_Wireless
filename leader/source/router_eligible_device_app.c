@@ -1744,7 +1744,7 @@ void HW_i2cInit_accel(){
 
 }
 
-
+//lab thread
 static void APP_CoapResource1Cb
 (
 coapSessionStatus_t sessionStatus,
